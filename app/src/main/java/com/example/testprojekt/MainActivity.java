@@ -17,15 +17,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ListView listView = (ListView) findViewById(R.id.list_view);
-        Project project = new Project("Android projekt");
-        Project project2 = new Project("Algo projekt");
-        Project project3 = new Project("Example projekt");
-
-        List<Project> projectList = new ArrayList<Project>(5);
-        for (Project project: projectList) {
-            projectList.add(new Project("Example Projekt"));
+        List<Project> projectList = new ArrayList<Project>();
+        for (int j = 0; j < projectList.size() ; j ++) {
+            projectList.add(new Project("Example"));
         }
-        ArrayAdapter<Project> adapter = new ArrayAdapter<Project>(this, android.R.layout.simple_list_item_1, projectList);
+
+        List<String> projectNames = new ArrayList<String>();
+        for (int i = 0; i < projectList.size(); i++) {
+            projectNames.add(projectList.get(i).toString());
+        }
+
+        ArrayAdapter<Project> adapter = new ArrayAdapter<Project>(this, android.R.layout.simple_list_item_1, projectNames);
         listView.setAdapter(adapter);
     }
 }
