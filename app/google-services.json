@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "32456453117",
+    "project_id": "projectplanner-e4a3d",
+    "storage_bucket": "projectplanner-e4a3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32456453117:android:b22e4f5728917d40c00794",
+        "android_client_info": {
+          "package_name": "com.example.testprojekt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32456453117-0hn5ke9foet40t7b9rouq9v4pc033k1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZMCZq78TkhcJ5P3wm0j9Fh4kq7P719Vk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32456453117-0hn5ke9foet40t7b9rouq9v4pc033k1u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
