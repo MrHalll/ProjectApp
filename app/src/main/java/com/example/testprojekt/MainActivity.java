@@ -25,13 +25,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.list_view);
-        List<String> projectList = new ArrayList<String>();
-        projectList.add(new Project("Example").toString());
-        projectList.add(new Project("Android projekt").toString());
-        projectList.add(new Project("Djikstra projekt").toString());
+        List<Project> projectList = new ArrayList<Project>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  R.layout.list_view, R.id.item_text_view, projectList);
-        listView.setAdapter(adapter);
+        ArrayAdapter<Project> adapter = new ArrayAdapter<Project>(this,  R.layout.list_view, R.id.item_text_view, projectList);
 
         //Database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -44,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 myRef.setValue("Hello");
                 Toast.makeText(MainActivity.this, "Added", Toast.LENGTH_SHORT).show();
+                projectList.add(new Project("Nytt projekt"));
+                listView.setAdapter(adapter);
             }
         });
     }
