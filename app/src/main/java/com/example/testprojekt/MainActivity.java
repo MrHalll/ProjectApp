@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         newProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                projectList.add(new Project("Nytt projekt").toString());
-                myRef.setValue("Nytt projekt");
+                myRef.setValue("Hello");
+                Toast.makeText(MainActivity.this, "Added", Toast.LENGTH_SHORT).show();
             }
         });
     }
