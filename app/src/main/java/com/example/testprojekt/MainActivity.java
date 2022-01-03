@@ -4,19 +4,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     FloatingActionButton newProjectButton;
     EditText inputText;
+    List<Project> projectList;
+    ArrayAdapter<Project> adapter;
+    FirebaseDatabase database;
+    DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,36 +36,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.list_view);
-        List<Project> projectList = new ArrayList<Project>();
-        ArrayAdapter<Project> adapter = new ArrayAdapter<Project>(this,  R.layout.list_view, R.id.item_text_view, projectList);
+        projectList = new ArrayList<Project>();
+        adapter = new ArrayAdapter<Project>(this,  R.layout.list_view, R.id.item_text_view, projectList);
 
         //Database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.setLogLevel(Logger.Level.DEBUG);
-        DatabaseReference myRef = database.getReference("Projekt");
+        database = FirebaseDatabase.getInstance();
+        dbRef = database.getReference("Projects");
 
         //Button för att lägga till ett nytt projekt
         newProjectButton = findViewById(R.id.newProjectButton);
         newProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Alert dialog that shows up when newProjectButton is pressed
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Name");
-
-                // Set up the input
+                builder.setTitle("Project Name");
                 inputText = new EditText(MainActivity.this);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 inputText.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(inputText);
 
-                // Set up the buttons
+                // Listeners to the OK and Cancel buttons in the AlertDialog
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        myRef.setValue(inputText.getText().toString());
-                        Toast.makeText(MainActivity.this, "Added", Toast.LENGTH_SHORT).show();
-                        projectList.add(new Project(inputText.getText().toString()));
+                        Project project = new Project(inputText.getText().toString());
+                        projectList.add(project);
                         listView.setAdapter(adapter);
+                        dbRef.setValue(inputText.getText().toString());
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -71,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //För att se så lyssnaren fungerar
+                Toast.makeText(MainActivity.this, "Du klickade på ett objekt i listan", Toast.LENGTH_SHORT).show();
+                //Här ska innehållet bytas ut med Fragment kanske?
             }
         });
     }
