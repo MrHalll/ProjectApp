@@ -37,12 +37,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.list_view);
-        projectList = new ArrayList<Project>();
+        projectList = new ArrayList<>();
         adapter = new ArrayAdapter<Project>(this,  R.layout.list_view, R.id.item_text_view, projectList);
 
         //Database
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("Projects");
+        dbRef = database.getReference();
 
         //Button för att lägga till ett nytt projekt
         newProjectButton = findViewById(R.id.newProjectButton);
@@ -63,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
                         Project project = new Project(inputText.getText().toString());
                         projectList.add(project);
                         listView.setAdapter(adapter);
-                        dbRef.setValue(inputText.getText().toString());
+
+                        DatabaseReference projectsRef = dbRef.child("Projects");
+                        projectsRef.setValue(projectList);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
