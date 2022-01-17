@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -106,9 +107,10 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //För att se så lyssnaren fungerar
                 Toast.makeText(MainActivity.this, "Du klickade på ett objekt i listan", Toast.LENGTH_SHORT).show();
-                //Här ska innehållet bytas ut med Fragment kanske?
+                //startar ProjectInfoActivity när man trycker på ett objekt i listView
+                Intent intent = new Intent(MainActivity.this, ProjectInfoActivity.class);
+                startActivity(intent);
             }
         });
     }
