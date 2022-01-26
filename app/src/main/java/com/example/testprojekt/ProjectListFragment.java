@@ -1,23 +1,19 @@
 package com.example.testprojekt;
 
+import android.content.DialogInterface;
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -28,11 +24,10 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements ProjectListFragment.Listener {
+
+public class ProjectListFragment extends ListFragment {
     ListView listView;
     FloatingActionButton newProjectButton;
     EditText inputText;
@@ -42,16 +37,23 @@ public class MainActivity extends AppCompatActivity implements ProjectListFragme
     DatabaseReference dbRef;
     int projectID = 0;
 
+    public ProjectListFragment() {
+
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    }
 
-        //listView = findViewById(R.id.list_view);
-        //projectList = new ArrayList<>();
-        //adapter = new ArrayAdapter<>(this,  R.layout.list_view, R.id.item_text_view, projectList);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_project_list, container, false);
 
-        /*
+        projectList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(inflater.getContext(), android.R.layout.simple_list_item_1, projectList);
+        setListAdapter(adapter);
+
         //Database
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("Projects");
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements ProjectListFragme
                         Project tempProject = project.get(i);
                         projectList.add(tempProject);
                     }
-                    listView.setAdapter(adapter);
+                    setListAdapter(adapter);
                 }
             }
 
@@ -75,20 +77,18 @@ public class MainActivity extends AppCompatActivity implements ProjectListFragme
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
 
-         */
-
-        /*
         //Button för att lägga till ett nytt projekt
-        newProjectButton = findViewById(R.id.newProjectButton);
+        newProjectButton = view.findViewById(R.id.newProjectButton);
         newProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Alert dialog that shows up when newProjectButton is pressed
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Project Name");
-                inputText = new EditText(MainActivity.this);
+                inputText = new EditText(getActivity());
                 inputText.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(inputText);
 
@@ -110,25 +110,16 @@ public class MainActivity extends AppCompatActivity implements ProjectListFragme
             }
         });
 
-         */
-
-       /*
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Du klickade på ett objekt i listan", Toast.LENGTH_SHORT).show();
-                //startar ProjectInfoActivity när man trycker på ett objekt i listView
-                Intent intent = new Intent(MainActivity.this, ProjectInfoActivity.class);
-                intent.putExtra("projectName", projectList.get(position).toString());
-                startActivity(intent);
-            }
-        });
-
-        */
+        // Inflate the layout for this fragment
+        return view;
     }
 
     @Override
-    public void itemClicked(long id) {
-        //fragment transaction
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
     }
+
+    interface Listener {
+        void itemClicked(long id);
+    };
 }

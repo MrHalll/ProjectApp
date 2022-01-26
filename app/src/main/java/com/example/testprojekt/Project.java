@@ -18,6 +18,8 @@ public class Project {
         return name;
     }
 
+    public String toString(){ return name; }
+
     public int getID(){
         return id;
     }
