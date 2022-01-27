@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements ProjectListFragment.Listener {
+public class MainActivity extends AppCompatActivity {
     ListView listView;
     FloatingActionButton newProjectButton;
     EditText inputText;
@@ -47,11 +47,10 @@ public class MainActivity extends AppCompatActivity implements ProjectListFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //listView = findViewById(R.id.list_view);
-        //projectList = new ArrayList<>();
-        //adapter = new ArrayAdapter<>(this,  R.layout.list_view, R.id.item_text_view, projectList);
+        listView = findViewById(R.id.list_view);
+        projectList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this,  R.layout.list_view, R.id.item_text_view, projectList);
 
-        /*
         //Database
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("Projects");
@@ -77,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements ProjectListFragme
             }
         });
 
-         */
-
-        /*
         //Button för att lägga till ett nytt projekt
         newProjectButton = findViewById(R.id.newProjectButton);
         newProjectButton.setOnClickListener(new View.OnClickListener() {
@@ -110,9 +106,6 @@ public class MainActivity extends AppCompatActivity implements ProjectListFragme
             }
         });
 
-         */
-
-       /*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -124,11 +117,5 @@ public class MainActivity extends AppCompatActivity implements ProjectListFragme
             }
         });
 
-        */
-    }
-
-    @Override
-    public void itemClicked(long id) {
-        //fragment transaction
     }
 }
