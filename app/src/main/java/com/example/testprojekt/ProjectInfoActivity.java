@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ProjectInfoActivity extends AppCompatActivity {
-    ImageButton deleteButton;
+    ImageButton deleteProjectBtn;
     TextView title;
 
     @Override
@@ -21,11 +21,11 @@ public class ProjectInfoActivity extends AppCompatActivity {
 
         title = findViewById(R.id.projectTitle);
         setTitle();
-        deleteButton = findViewById(R.id.deleteProjectImage);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        deleteProjectBtn = findViewById(R.id.deleteButton);
+        deleteProjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //delete the project
             }
         });
     }
