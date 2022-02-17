@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,8 +85,7 @@ public class ProjectListFragment extends Fragment {
             }
         });
         ArrayList<Project> projectList = getArguments().getParcelableArrayList("projectList");
-        adapter = new ArrayAdapter<Project>(getActivity(),  R.layout.list_view, R.id.item_text_view, projectList);
-
+        adapter = new ArrayAdapter<>(getActivity(),  R.layout.list_view, R.id.item_text_view, projectList);
         listView = view.findViewById(R.id.list_view);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.EditText;
 
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +29,14 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
         setContentView(R.layout.activity_main);
 
         projectList = new ArrayList<>();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("projectList", projectList);
+        Fragment projectListFrag = new ProjectListFragment();
+        projectListFrag.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.fragmentContainer, ProjectListFragment.class, null)
+                .commit();
 
         //Database
         database = FirebaseDatabase.getInstance();
@@ -44,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
                         Project tempProject = project.get(i);
                         projectList.add(tempProject);
                     }
-                    //listView.setAdapter(adapter);
                 }
             }
 
@@ -53,18 +61,6 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
 
             }
         });
-        Fragment projectListFrag = new ProjectListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("projectList", projectList);
-        projectListFrag.setArguments(bundle);
-
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainer, ProjectListFragment.class, null)
-                    .commit();
-        }
 
     }
 
