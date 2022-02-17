@@ -33,10 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements ChecklistFragment.OnProjectDeletedListener{
-    FloatingActionButton newProjectButton;
-    EditText inputText;
-    List<Project> projectList;
-    ArrayAdapter<Project> adapter;
+    ArrayList<Project> projectList;
     FirebaseDatabase database;
     DatabaseReference dbRef;
     int projectID = 0;
@@ -47,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
         setContentView(R.layout.activity_main);
 
         projectList = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this,  R.layout.list_view, R.id.item_text_view, projectList);
 
         //Database
         database = FirebaseDatabase.getInstance();
@@ -73,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
 
             }
         });
+        Fragment projectListFrag = new ProjectListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("projectList", projectList);
+        projectListFrag.setArguments(bundle);
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -80,36 +81,6 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
                     .add(R.id.fragmentContainer, ProjectListFragment.class, null)
                     .commit();
         }
-
-        //Button för att lägga till ett nytt projekt
-        newProjectButton = findViewById(R.id.newProjectButton);
-        newProjectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Alert dialog that shows up when newProjectButton is pressed
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Project Name");
-                inputText = new EditText(MainActivity.this);
-                inputText.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(inputText);
-
-                // Listeners to the OK and Cancel buttons in the AlertDialog
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Project project = new Project(inputText.getText().toString(), projectID);
-                        dbRef.child(String.valueOf(projectID++)).setValue(project);
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-            }
-        });
 
     }
 
