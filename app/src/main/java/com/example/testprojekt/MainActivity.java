@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    ListView listView;
     FloatingActionButton newProjectButton;
     EditText inputText;
     List<Project> projectList;
@@ -47,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = findViewById(R.id.list_view);
         projectList = new ArrayList<>();
         adapter = new ArrayAdapter<>(this,  R.layout.list_view, R.id.item_text_view, projectList);
 
@@ -66,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         Project tempProject = project.get(i);
                         projectList.add(tempProject);
                     }
-                    listView.setAdapter(adapter);
+                    //listView.setAdapter(adapter);
                 }
             }
 
@@ -75,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragmentContainer, ProjectListFragment.class, null)
+                    .commit();
+        }
 
         //Button för att lägga till ett nytt projekt
         newProjectButton = findViewById(R.id.newProjectButton);
@@ -103,17 +108,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Du klickade på ett objekt i listan", Toast.LENGTH_SHORT).show();
-                //startar ProjectInfoActivity när man trycker på ett objekt i listView
-                Intent intent = new Intent(MainActivity.this, ProjectInfoActivity.class);
-                intent.putExtra("projectName", projectList.get(position).toString());
-                startActivity(intent);
             }
         });
 
