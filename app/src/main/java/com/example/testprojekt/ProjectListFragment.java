@@ -72,7 +72,6 @@ public class ProjectListFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         listener.onProjectAdd(inputText);
-
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
