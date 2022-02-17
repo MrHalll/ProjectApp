@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 
 public class ChecklistFragment extends Fragment {
 
-    private OnProjectDeletedListener listener;
+    private onProjectDeletedListener listener;
 
-    public interface OnProjectDeletedListener {
+    public interface onProjectDeletedListener {
         public void onProjectDelete(String link);
     }
 
@@ -25,8 +25,8 @@ public class ChecklistFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnProjectDeletedListener) {
-            listener = (OnProjectDeletedListener) context;
+        if (context instanceof onProjectDeletedListener) {
+            listener = (onProjectDeletedListener) context;
         } else {
             throw new ClassCastException(context.toString() + " must implement OnProjectedDeletedListener");
         }

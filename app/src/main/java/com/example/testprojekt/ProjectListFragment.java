@@ -1,5 +1,6 @@
 package com.example.testprojekt;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -25,9 +26,25 @@ public class ProjectListFragment extends Fragment {
     ArrayAdapter<Project> adapter;
     FloatingActionButton newProjectButton;
     EditText inputText;
+    private onProjectAddedListener listener;
+
+    public interface onProjectAddedListener {
+        public void onProjectAdd(EditText inputText);
+    }
 
     public ProjectListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof onProjectAddedListener) {
+            listener = (onProjectAddedListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement ProjectListFragment.onProjectAddedListener");
+        }
     }
 
     @Override
@@ -44,9 +61,9 @@ public class ProjectListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Alert dialog that shows up when newProjectButton is pressed
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Project Name");
-                inputText = new EditText(MainActivity.this);
+                inputText = new EditText(getActivity());
                 inputText.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(inputText);
 
@@ -54,8 +71,8 @@ public class ProjectListFragment extends Fragment {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Project project = new Project(inputText.getText().toString(), projectID);
-                        dbRef.child(String.valueOf(projectID++)).setValue(project);
+                        listener.onProjectAdd(inputText);
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
