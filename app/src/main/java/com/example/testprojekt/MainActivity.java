@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ChecklistFragment.OnProjectDeletedListener{
     FloatingActionButton newProjectButton;
     EditText inputText;
     List<Project> projectList;
@@ -111,5 +111,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onProjectDelete(String link) {
+        //Kod för att ta bort projekt från databas
     }
 }
