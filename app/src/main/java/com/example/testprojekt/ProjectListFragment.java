@@ -93,7 +93,6 @@ public class ProjectListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //byt till andra fragment, skicka med namnet på projektet
                 Bundle bundle = new Bundle();
                 bundle.putString("projectName", projectList.get(position).toString());
                 ChecklistFragment checklistFrag = new ChecklistFragment();
