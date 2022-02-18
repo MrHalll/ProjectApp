@@ -20,6 +20,7 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ProjectListFragment extends Fragment {
@@ -84,13 +85,21 @@ public class ProjectListFragment extends Fragment {
                 builder.show();
             }
         });
-        ArrayList<Project> projectList = getArguments().getParcelableArrayList("projectList");
+        ArrayList projectList = getArguments().getParcelableArrayList("projectList");
         adapter = new ArrayAdapter<>(getActivity(),  R.layout.list_view, R.id.item_text_view, projectList);
+
         listView = view.findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //byt till andra fragment
+                Bundle bundle = new Bundle();
+                ChecklistFragment checklistFrag = new ChecklistFragment();
+                getActivity().getSupportFragmentManager().
+                        beginTransaction()
+                        .replace(R.id.fragmentContainer, checklistFrag)
+                        .commit();
             }
         });
         return view;

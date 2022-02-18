@@ -29,14 +29,6 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
         setContentView(R.layout.activity_main);
 
         projectList = new ArrayList<>();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("projectList", projectList);
-        Fragment projectListFrag = new ProjectListFragment();
-        projectListFrag.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .add(R.id.fragmentContainer, ProjectListFragment.class, null)
-                .commit();
 
         //Database
         database = FirebaseDatabase.getInstance();
@@ -53,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
                         Project tempProject = project.get(i);
                         projectList.add(tempProject);
                     }
+                    createFragment();
                 }
             }
 
@@ -62,6 +55,18 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
             }
         });
 
+    }
+
+    private void createFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("projectList", projectList);
+        Fragment projectListFrag = new ProjectListFragment();
+        projectListFrag.setArguments(bundle);
+
+        getSupportFragmentManager().
+                beginTransaction()
+                .add(R.id.fragmentContainer, projectListFrag)
+                .commit();
     }
 
     @Override

@@ -8,11 +8,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class ChecklistFragment extends Fragment {
 
     private onProjectDeletedListener listener;
+    ImageButton deleteProjectBtn;
+    TextView title;
 
     public interface onProjectDeletedListener {
         public void onProjectDelete(String link);
@@ -39,8 +43,12 @@ public class ChecklistFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_check_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_check_list, container, false);
+
+       // title = view.findViewById(R.id.);
+       // deleteProjectBtn = view.findViewById(R.id.);
+
+        return view;
     }
 
     public void onSomeClick(View v) {
