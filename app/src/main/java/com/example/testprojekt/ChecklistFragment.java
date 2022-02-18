@@ -45,9 +45,16 @@ public class ChecklistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_check_list, container, false);
 
-       // title = view.findViewById(R.id.);
-       // deleteProjectBtn = view.findViewById(R.id.);
-
+        title = view.findViewById(R.id.projectTitle);
+        String projectName = getArguments().getString("projectName");
+        title.setText(projectName);
+        deleteProjectBtn = view.findViewById(R.id.newProjectButton);
+        deleteProjectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //delete project
+            }
+        });
         return view;
     }
 
