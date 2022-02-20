@@ -4,9 +4,12 @@ package com.example.testprojekt;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class Project implements Parcelable {
-    String name;
-    int id;
+    private String name;
+    private int id;
+    private ArrayList<String> checklist;
 
     public Project(){
 
@@ -15,6 +18,7 @@ public class Project implements Parcelable {
     public Project(String name, int id){
         this.name = name;
         this.id = id;
+        checklist = new ArrayList<>();
     }
 
     protected Project(Parcel in) {
@@ -33,6 +37,12 @@ public class Project implements Parcelable {
             return new Project[size];
         }
     };
+
+    public void addToChecklist(String task){
+        if (checklist == null)
+            checklist = new ArrayList<>();
+        checklist.add(task);
+    }
 
     public String getName(){
         return name;
@@ -53,5 +63,9 @@ public class Project implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeInt(id);
+    }
+
+    public ArrayList<String> getChecklist() {
+        return checklist;
     }
 }

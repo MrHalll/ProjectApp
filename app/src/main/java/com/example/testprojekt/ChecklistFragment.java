@@ -11,7 +11,6 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,13 +28,16 @@ public class ChecklistFragment extends Fragment {
     ImageButton deleteProjectBtn;
     TextView title;
     ListView listView;
-    FloatingActionButton newProjectButton;
+    FloatingActionButton newTaskButton;
     ArrayList<String> checklist;
+    ArrayList<Project> projectList;
     ArrayAdapter<String> adapter;
     EditText inputText;
+    Project project;
+
 
     public interface onProjectDeletedListener {
-        public void onProjectDelete(String link);
+        public void onProjectDelete(int project);
     }
 
     public ChecklistFragment() {
@@ -61,25 +63,39 @@ public class ChecklistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_check_list, container, false);
 
-        //Checklistan
         title = view.findViewById(R.id.projectTitle);
         listView = view.findViewById(R.id.list_view);
-        checklist = new ArrayList<>();
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, checklist);
-        listView.setAdapter(adapter);
+        deleteProjectBtn = view.findViewById(R.id.deleteButton);
+        newTaskButton = view.findViewById(R.id.newProjectButton);
 
-        //Projektets namn
-        String projectName = getArguments().getString("projectName");
-        title.setText(projectName);
-        deleteProjectBtn = view.findViewById(R.id.newProjectButton);
+        //Hämtar det projekt man klickade på
+        projectList = getArguments().getParcelableArrayList("projectList");
+        project = getArguments().getParcelable("project");
+        checklist = getArguments().getStringArrayList("checklist");
+        title.setText(project.getName());
+        if (checklist != null){
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, checklist);
+            listView.setAdapter(adapter);
+        }
+
         deleteProjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //delete the project in the database
+                //delete the project in the database and switch fragment
+                listener.onProjectDelete(project.getID());
+                projectList.remove(project);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("projectList", projectList);
+                ProjectListFragment projectListFrag = new ProjectListFragment();
+                projectListFrag.setArguments(bundle);
+                getActivity().getSupportFragmentManager().
+                        beginTransaction()
+                        .replace(R.id.fragmentContainer, projectListFrag)
+                        .commit();
             }
         });
-        newProjectButton = view.findViewById(R.id.newProjectButton);
-        newProjectButton.setOnClickListener(new View.OnClickListener() {
+
+        newTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -92,8 +108,8 @@ public class ChecklistFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //lägg till en ny task i checklistan
-                        checklist.add(inputText.getText().toString());
-                        listView.setAdapter(adapter);
+                        String task = inputText.getText().toString();
+                        updateChecklist(task);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -108,7 +124,14 @@ public class ChecklistFragment extends Fragment {
         return view;
     }
 
+    private void updateChecklist(String task) {
+        project.addToChecklist(task);
+        checklist = project.getChecklist();
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, checklist);
+        listView.setAdapter(adapter);
+    }
+
     public void onSomeClick(View v) {
-        listener.onProjectDelete("some link");
+        listener.onProjectDelete(0);
     }
 }

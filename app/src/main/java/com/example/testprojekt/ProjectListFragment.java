@@ -22,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectListFragment extends Fragment {
     ListView listView;
@@ -29,9 +30,11 @@ public class ProjectListFragment extends Fragment {
     FloatingActionButton newProjectButton;
     EditText inputText;
     private onProjectAddedListener listener;
+    ArrayList<Project> projectList;
+    ArrayList<String> checklist;
 
     public interface onProjectAddedListener {
-        public void onProjectAdd(EditText inputText);
+        public void onProjectAdd(EditText inputText, ArrayList checklist);
     }
 
     public ProjectListFragment() {
@@ -57,8 +60,13 @@ public class ProjectListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
-
+        listView = view.findViewById(R.id.list_view);
         newProjectButton = view.findViewById(R.id.newProjectButton);
+
+        projectList = getArguments().getParcelableArrayList("projectList");
+        adapter = new ArrayAdapter<>(getActivity(),  R.layout.list_view, R.id.item_text_view, projectList);
+        listView.setAdapter(adapter);
+
         newProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +81,9 @@ public class ProjectListFragment extends Fragment {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.onProjectAdd(inputText);
+                        checklist = new ArrayList<>();
+                        listener.onProjectAdd(inputText, checklist);
+                        listView.setAdapter(adapter);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -85,16 +95,14 @@ public class ProjectListFragment extends Fragment {
                 builder.show();
             }
         });
-        ArrayList projectList = getArguments().getParcelableArrayList("projectList");
-        adapter = new ArrayAdapter<>(getActivity(),  R.layout.list_view, R.id.item_text_view, projectList);
 
-        listView = view.findViewById(R.id.list_view);
-        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString("projectName", projectList.get(position).toString());
+                bundle.putParcelableArrayList("projectList", projectList);
+                bundle.putStringArrayList("checklist", checklist);
+                bundle.putParcelable("project", projectList.get(position));
                 ChecklistFragment checklistFrag = new ChecklistFragment();
                 checklistFrag.setArguments(bundle);
                 getActivity().getSupportFragmentManager().
