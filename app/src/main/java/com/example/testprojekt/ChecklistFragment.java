@@ -83,15 +83,6 @@ public class ChecklistFragment extends Fragment {
             public void onClick(View v) {
                 //delete the project in the database and switch fragment
                 listener.onProjectDelete(project.getID());
-                projectList.remove(project);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("projectList", projectList);
-                ProjectListFragment projectListFrag = new ProjectListFragment();
-                projectListFrag.setArguments(bundle);
-                getActivity().getSupportFragmentManager().
-                        beginTransaction()
-                        .replace(R.id.fragmentContainer, projectListFrag)
-                        .commit();
             }
         });
 

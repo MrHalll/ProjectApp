@@ -48,6 +48,15 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
                         projectList.add(tempProject);
                     }
                 }
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("projectList", projectList);
+                Fragment projectListFrag = new ProjectListFragment();
+                projectListFrag.setArguments(bundle);
+
+                getSupportFragmentManager().
+                        beginTransaction()
+                        .add(R.id.fragmentContainer, projectListFrag)
+                        .commit();
             }
 
             @Override
@@ -66,19 +75,20 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
 
         getSupportFragmentManager().
                 beginTransaction()
-                .add(R.id.fragmentContainer, projectListFrag)
+                .replace(R.id.fragmentContainer, projectListFrag)
                 .commit();
     }
 
     @Override
     public void onProjectDelete(int project) {
         dbRef.child("Projects").child(String.valueOf(project)).removeValue();
+        addFragment();
     }
 
     @Override
     public void onProjectAdd(EditText inputText, ArrayList checklist) {
         Project project = new Project(inputText.getText().toString(), projectID);
         dbRef.child(String.valueOf(projectID)).setValue(project);
-        dbRef.child(String.valueOf(projectID)).child(project.getName()).setValue(checklist);
+        dbRef.child(String.valueOf(projectID)).
     }
 }
