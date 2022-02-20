@@ -37,26 +37,17 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                addFragment();
                 GenericTypeIndicator<ArrayList<Project>> type = new GenericTypeIndicator<ArrayList<Project>>() {};
                 ArrayList<Project> project = snapshot.getValue(type);
+                projectList.clear();
                 if (project != null) {
-                    projectList.clear();
                     projectID = project.size();
                     for (int i = 0; i < project.size() ; i++) {
                         Project tempProject = project.get(i);
                         projectList.add(tempProject);
                     }
                 }
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("projectList", projectList);
-                Fragment projectListFrag = new ProjectListFragment();
-                projectListFrag.setArguments(bundle);
-
-                getSupportFragmentManager().
-                        beginTransaction()
-                        .add(R.id.fragmentContainer, projectListFrag)
-                        .commit();
+                addFragment();
             }
 
             @Override
@@ -80,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
     }
 
     @Override
-    public void onProjectDelete(int project) {
-        dbRef.child("Projects").child(String.valueOf(project)).removeValue();
+    public void onProjectDelete(int projectId) {
+        dbRef.child(String.valueOf(projectId)).removeValue();
         addFragment();
     }
 
@@ -89,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
     public void onProjectAdd(EditText inputText, ArrayList checklist) {
         Project project = new Project(inputText.getText().toString(), projectID);
         dbRef.child(String.valueOf(projectID)).setValue(project);
-        dbRef.child(String.valueOf(projectID)).
+        projectID++;
+        //dbRef.child(String.valueOf(projectID)).updateChildren()
     }
 }

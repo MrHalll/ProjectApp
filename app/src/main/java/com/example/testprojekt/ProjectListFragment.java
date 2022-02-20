@@ -108,6 +108,7 @@ public class ProjectListFragment extends Fragment {
                 getActivity().getSupportFragmentManager().
                         beginTransaction()
                         .replace(R.id.fragmentContainer, checklistFrag)
+                        .addToBackStack(null)
                         .commit();
             }
         });
