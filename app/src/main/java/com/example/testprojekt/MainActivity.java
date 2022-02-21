@@ -14,15 +14,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ChecklistFragment.onProjectDeletedListener, ProjectListFragment.onProjectAddedListener {
     ArrayList<Project> projectList;
     FirebaseDatabase database;
-    DatabaseReference dbRef;
+    DatabaseReference dbProjectRef;
+    DatabaseReference dbTaskRef;
     int projectID = 0;
+    int taskID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +34,24 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
 
         //Database
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("Projects");
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbTaskRef = database.getReference("Tasks");
+        dbProjectRef = database.getReference("Projects");
+        dbProjectRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 GenericTypeIndicator<ArrayList<Project>> type = new GenericTypeIndicator<ArrayList<Project>>() {};
-                ArrayList<Project> project = snapshot.getValue(type);
+                List<Project> project = new ArrayList<Project>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    project.add((Project) ds.getValue(Project.class));
+                }
                 projectList.clear();
                 if (project != null) {
-                    projectID = project.size();
+                    //projectID = project.size();
                     for (int i = 0; i < project.size() ; i++) {
-                        Project tempProject = project.get(i);
-                        projectList.add(tempProject);
+                        if (project.get(i) != null) {
+                            Project tempProject = project.get(i);
+                            projectList.add(tempProject);
+                        }
                     }
                 }
                 addFragment();
@@ -72,15 +79,22 @@ public class MainActivity extends AppCompatActivity implements ChecklistFragment
 
     @Override
     public void onProjectDelete(int projectId) {
-        dbRef.child(String.valueOf(projectId)).removeValue();
+        dbProjectRef.child(String.valueOf(projectId)).removeValue();
         addFragment();
+        projectID++;
     }
 
     @Override
     public void onProjectAdd(EditText inputText, ArrayList checklist) {
-        Project project = new Project(inputText.getText().toString(), projectID);
-        dbRef.child(String.valueOf(projectID)).setValue(project);
         projectID++;
+        Project project = new Project(inputText.getText().toString(), projectID);
+        dbProjectRef.child(String.valueOf(projectID)).setValue(project);
+        for (Object task : checklist) {
+            dbProjectRef.child(String.valueOf(projectID)).child(String.valueOf(taskID)).setValue(task);
+        }
+
+
+        taskID++;
         //dbRef.child(String.valueOf(projectID)).updateChildren()
     }
 }
