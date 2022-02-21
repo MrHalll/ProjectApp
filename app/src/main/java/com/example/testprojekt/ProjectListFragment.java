@@ -97,14 +97,12 @@ public class ProjectListFragment extends Fragment {
         newProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Alert dialog that shows up when newProjectButton is pressed
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Project Name");
                 inputText = new EditText(getActivity());
                 inputText.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(inputText);
 
-                // Listeners to the OK and Cancel buttons in the AlertDialog
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -122,7 +120,6 @@ public class ProjectListFragment extends Fragment {
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            //När användare klickar på ett projekt byts detta fragment ut mot ett ChecklistFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Project clickedProject = projectList.get(position);

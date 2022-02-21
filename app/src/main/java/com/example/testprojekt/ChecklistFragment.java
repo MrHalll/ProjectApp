@@ -148,9 +148,4 @@ public class ChecklistFragment extends Fragment {
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, checklist);
         listView.setAdapter(adapter);
     }
-
-    /*
-    public void onSomeClick(View v) {
-        listener.onProjectDelete(0);
-    } */
 }
