@@ -37,13 +37,12 @@ public class ProjectListFragment extends Fragment {
     EditText inputText;
     private onProjectAddedListener listener;
     ArrayList<Project> projectList;
-    ArrayList<String> checklist;
 
     /**
      * Interface som används med listener
      */
     public interface onProjectAddedListener {
-        public void onProjectAdd(EditText inputText, ArrayList checklist);
+        public void onProjectAdd(String name);
     }
 
     public ProjectListFragment() {
@@ -109,9 +108,7 @@ public class ProjectListFragment extends Fragment {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        checklist = new ArrayList<>();
-                        listener.onProjectAdd(inputText, checklist);
-                        listView.setAdapter(adapter);
+                        listener.onProjectAdd(inputText.getText().toString());
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -128,10 +125,11 @@ public class ProjectListFragment extends Fragment {
             //När användare klickar på ett projekt byts detta fragment ut mot ett ChecklistFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Project clickedProject = projectList.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("projectList", projectList);
-                bundle.putStringArrayList("checklist", checklist);
-                bundle.putParcelable("project", projectList.get(position));
+                bundle.putStringArrayList("checklist", clickedProject.getChecklist());
+                bundle.putParcelable("project", clickedProject);
                 ChecklistFragment checklistFrag = new ChecklistFragment();
                 checklistFrag.setArguments(bundle);
                 getActivity().getSupportFragmentManager().

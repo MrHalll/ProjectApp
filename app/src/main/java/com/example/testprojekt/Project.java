@@ -6,6 +6,10 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+/**
+ * A class that represents a Project with the attributes name id and a checklist that belongs to
+ * the project.
+ */
 public class Project implements Parcelable {
     private String name;
     private int id;

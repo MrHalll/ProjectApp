@@ -93,7 +93,6 @@ public class ChecklistFragment extends Fragment {
         deleteProjectBtn = view.findViewById(R.id.deleteButton);
         newTaskButton = view.findViewById(R.id.newProjectButton);
 
-        //Hämtar det projekt man klickade på
         projectList = getArguments().getParcelableArrayList("projectList");
         project = getArguments().getParcelable("project");
         checklist = getArguments().getStringArrayList("checklist");
@@ -107,7 +106,6 @@ public class ChecklistFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                //delete the project in the database and switch fragment
                 listener.onProjectDelete(project.getID());
             }
         });
@@ -120,11 +118,9 @@ public class ChecklistFragment extends Fragment {
                 inputText = new EditText(getActivity());
                 inputText.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(inputText);
-                // Listeners to the OK and Cancel buttons in the AlertDialog
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //lägg till en ny task i checklistan
                         String task = inputText.getText().toString();
                         updateChecklist(task);
                     }
