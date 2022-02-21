@@ -24,6 +24,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment som innehåller lista med alla projekt i databasen, även en knapp för att lägga till projekt
+ *
+ * @author Oskar Persson & Melvin Hall
+ */
+
 public class ProjectListFragment extends Fragment {
     ListView listView;
     ArrayAdapter<Project> adapter;
@@ -33,6 +39,9 @@ public class ProjectListFragment extends Fragment {
     ArrayList<Project> projectList;
     ArrayList<String> checklist;
 
+    /**
+     * Interface som används med listener
+     */
     public interface onProjectAddedListener {
         public void onProjectAdd(EditText inputText, ArrayList checklist);
     }
@@ -41,6 +50,12 @@ public class ProjectListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Metod som körs när fragmentet anknyts till activity
+     * Skapar Listener
+     * @param context
+     * @return void
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -52,12 +67,24 @@ public class ProjectListFragment extends Fragment {
         }
     }
 
+    /**
+     * Körs när fragmentet skapas, kallar endast super
+     * @param savedInstanceState
+     * @return void
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
+    /**
+     * Metod som skapar view genom inflater
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
@@ -98,6 +125,7 @@ public class ProjectListFragment extends Fragment {
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //När användare klickar på ett projekt byts detta fragment ut mot ett ChecklistFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();

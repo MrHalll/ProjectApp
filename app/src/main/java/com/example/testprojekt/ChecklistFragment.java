@@ -21,7 +21,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-
+/**
+ * Fragment med information om ett projekt, innehåller även delete-knapp
+ *
+ * @author Oskar Persson & Melvin Hall
+ */
 public class ChecklistFragment extends Fragment {
 
     private onProjectDeletedListener listener;
@@ -36,6 +40,9 @@ public class ChecklistFragment extends Fragment {
     Project project;
 
 
+    /**
+     * Interface som används med listener
+     */
     public interface onProjectDeletedListener {
         public void onProjectDelete(int project);
     }
@@ -44,6 +51,12 @@ public class ChecklistFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Metoden körs när fragmentet anknyts till activity.
+     * Skapar listener
+     * @param context
+     * @return void
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -54,11 +67,23 @@ public class ChecklistFragment extends Fragment {
         }
     }
 
+    /**
+     * Körs när fragmentet skapas, kallar endast super
+     * @param savedInstanceState
+     * @return void
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Metod som skapar view genom inflater
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_check_list, container, false);
@@ -79,6 +104,7 @@ public class ChecklistFragment extends Fragment {
         }
 
         deleteProjectBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 //delete the project in the database and switch fragment
@@ -115,6 +141,11 @@ public class ChecklistFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Metod som uppdaterar checklista när en task lagts till
+     * @param task
+     * @return void
+     */
     private void updateChecklist(String task) {
         project.addToChecklist(task);
         checklist = project.getChecklist();
@@ -122,7 +153,8 @@ public class ChecklistFragment extends Fragment {
         listView.setAdapter(adapter);
     }
 
+    /*
     public void onSomeClick(View v) {
         listener.onProjectDelete(0);
-    }
+    } */
 }
